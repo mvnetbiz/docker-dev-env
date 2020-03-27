@@ -10,18 +10,8 @@ let
 in
 dockerTools.buildImage {
   name = "docker-dev-uids";
-  tag = "0.1";
-  contents = with pkgs; [
-    coreutils
-    bash
-    vim
-    nano
-    git
-    go
-    terraform
-    ansible
-  ];
-
+  tag = "0.2";
+  contents = import ./tools.nix { inherit pkgs; };
   runAsRoot = ''
     #!${pkgs.stdenv.shell}
     ${dockerTools.shadowSetup}
