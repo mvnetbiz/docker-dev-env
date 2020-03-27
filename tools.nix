@@ -1,3 +1,13 @@
+# This file defines the list of derivations/packages we want to install.
+# This list is defined in one place so it may be included in the other files that
+# make the various nix-shell, Docker, etc. environments that these packages will be
+# integrated into. This way we have the exact same versions in a local shell
+# Or in a local or remote container.
+
+# Below is a function which takes one parameter, a set containing the Nixpkgs
+# Package set, so we can use a package it already has definitions for
+# (or even override its attributes like version) we return a list of these packages.
+
 { pkgs }:
 
 with pkgs; [
