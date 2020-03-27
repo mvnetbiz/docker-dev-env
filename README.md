@@ -1,5 +1,4 @@
-# docker-dev-env
-Nix docker &amp; dev environment thoughts
+# nix-shell / Nixpkgs dockerTools for dev environment examples
 
 Just some quick basic examples of either a local shell or a docker container that have some tools in their environment. It would be possible to make one of the .nix files include the other or to have a common file for the inputs (go, ansible, terraform) so that changes to versions of the common tools or anything would only need to be updated in one file (that is if both of these approaches would be used anyways).
 
