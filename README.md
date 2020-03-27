@@ -1,10 +1,24 @@
 # nix-shell / Nixpkgs dockerTools for dev environment examples
 
-Just some quick basic examples of either a local shell or a docker container that have some tools in their environment. It would be possible to make one of the .nix files include the other or to have a common file for the inputs (go, ansible, terraform) so that changes to versions of the common tools or anything would only need to be updated in one file (that is if both of these approaches would be used anyways).
-
-I will hopefully add an example of overriding a package version later, but If you want to maintain specific versions of these tools there are a couple of approaches - one approach would be to stick with the same git revision of the nixpkgs "channel", another is to override the version of specific packages individually, which in most cases is probably simply adding the version attribute and sha256 of whichever tool.
+Just some quick basic examples of either a local shell or a Docker container that have some tools in their environment. `tools.nix` contains all of the packages, including two examples of different ways you might use a specific package version. Running `$ nix-shell` will source the file shell.nix, which contains a derivation for a shell environment including contents of `tools.nix`. Running `$ nix-build` contains a derivation for a Docker image that contains the contents of `tools.nix` in its $PATH and additionally has user accounts created from the file `users.json` which is evaluated at build-time of the Docker image.
 
 To use this, you can run any of:
-$ nix-shell # Enter local shell
-$ nix-build default.nix # Build a docker image
-$ nix-build withUIDs.nix # Build a docker image. This version includes creating users with UID/GID from a JSON file.
+## Enter a local shell
+```console
+$ nix-shell
+[nix-shell:~/src/docker-dev-env]$ go version
+warning: GOPATH set to GOROOT (/nix/store/p2sxxrkp7y6dwzmgh003dc336x2vhmi5-go-1.12.17/share/go) has no effect
+go version go1.12.17 linux/amd64
+```
+## Build, load, and run in a Docker image
+```console
+$ nix-build default.nix
+$ docker load < result
+Loaded image: docker-dev-uids:0.2
+$ docker run -it docker-dev-uids:0.2 bash
+bash-4.4# mkdir /tmp
+bash-4.4# terraform --version
+Terraform v0.10.2
+bash-4.4# exit
+$
+```
