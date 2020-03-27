@@ -22,3 +22,12 @@ Terraform v0.10.2
 bash-4.4# exit
 $
 ```
+
+## Other considerations
+The above options are one step to build, automatically reproducible, and easy to version and garbage collect. Nixpkgs' dockerTools.buildImage is different than Docker build because it builds all the the packages on the host and then combines them together in an image following the Docker format. The benefit of this is that it is built sandboxed and with deterministic inputs, as opposed to common Dockerfile implementations that introduce impurities like direct internet access to retrieve sources, possibly introducing non-determinism.
+
+Another option that might be easier to integrate into an existing CI/CD could be to use a Docker container that actually contains the whole Nix tools inside of it. Your pipeline would fetch your Nix expressions in this container and build the environment. This could be cached somewhere or your package build could be done in the same step. [Official Nix package manager Docker image](https://hub.docker.com/r/nixos/nix/) 
+
+## More Info
+- More examples: <https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/docker/examples.nix>
+- Article with more in-depth examples for Nixpkgs dockerTools: <http://lethalman.blogspot.com/2016/04/cheap-docker-images-with-nix_15.html>
